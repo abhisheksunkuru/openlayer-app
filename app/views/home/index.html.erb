@@ -1,0 +1,67 @@
+<div id="map" class="map"></div>
+    <div style="display: none;">
+      <!-- Clickable label for Vienna -->
+      <a class="overlay" id="vienna" target="_blank" href="http://en.wikipedia.org/wiki/Vienna">Vienna</a>
+      <div id="marker" title="Marker"></div>
+      <!-- Popup -->
+      <div id="popup" title="Welcome to OpenLayers">
+        <div>
+
+          <%= form_tag '/share_location' do %>
+            <%= label_tag 'email'%>
+            <%= text_field_tag 'email'%>
+
+            <%= check_box_tag 'public' %>
+            <%= label_tag 'public'%>
+            <%= hidden_field_tag 'lon'%>
+            <%= hidden_field_tag 'lat'%>
+            <%= submit_tag 'share'%>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <% content_for :script do%>
+      var layer = new ol.layer.Tile({
+        source: new ol.source.OSM()
+      });
+
+      var map = new ol.Map({
+        layers: [layer],
+        target: 'map',
+        view: new ol.View({
+          center: [0, 0],
+          zoom: 2
+        })
+      });
+
+
+
+      // Popup showing the position the user clicked
+      var popup = new ol.Overlay({
+        element: document.getElementById('popup')
+      });
+      map.addOverlay(popup);
+
+      map.on('click', function(evt) {
+        var element = popup.getElement();
+        var coordinate = evt.coordinate;
+        console.log("coordinate",ol.proj.transform(
+            coordinate, 'EPSG:3857', 'EPSG:4326'))
+        console.log("coordinate",coordinate);
+        document.getElementById('lon').value=coordinate[0]
+        document.getElementById('lat').value=coordinate[1]
+        var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
+            coordinate, 'EPSG:3857', 'EPSG:4326'));
+
+        $(element).popover('destroy');
+        popup.setPosition(coordinate);
+        // the keys are quoted to prevent renaming in ADVANCED mode.
+        $(element).popover({
+          'placement': 'top',
+          'animation': false,
+          'html': true,
+          'content': '<p>The location you clicked was:</p><code>' + hdms + '</code>'
+        });
+        $(element).popover('show');
+      });
+    <%end%>

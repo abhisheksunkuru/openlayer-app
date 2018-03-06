@@ -1,0 +1,50 @@
+<h1>Listing locations shared by me</h1>
+
+<table>
+  <%= render 'thead' %>
+
+  <tbody>
+
+    <% @locations_shared_by_me.each do |location| %>
+      <tr>
+        <%= render location%>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<h1>Listing public locations </h1>
+
+
+<table>
+  <%= render 'thead' %>
+
+  <tbody>
+
+    <% @public_shared_locations.each do |location| %>
+      <tr>
+        <%= render location%>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<h1>Listing locations shared to me</h1>
+<table>
+  <%= render 'thead' %>
+
+  <tbody>
+
+    <% @locataions_shared_to_me.each do |location| %>
+      <tr>
+        <%= render location%>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<script type="text/javascript">
+  <% @locations_shared_by_me.pluck('lon')%>
+
+
+</script>

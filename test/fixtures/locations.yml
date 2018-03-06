@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  lonlat: 
+  from: 1
+  to: MyString
+  public: false
+
+two:
+  lonlat: 
+  from: 1
+  to: MyString
+  public: false
